@@ -1,5 +1,5 @@
 
-import 'package:arvrlearn/onboarding_screen.dart';
+import 'package:arvrlearn/pages/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 
 

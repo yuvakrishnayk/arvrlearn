@@ -1,4 +1,4 @@
-import 'package:arvrlearn/homepage.dart';
+import 'package:arvrlearn/pages/bottom_navigation.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -215,7 +215,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void _navigateToHome() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => HomeScreen()),
+      MaterialPageRoute(builder: (context) => MainScreen()),
     );
   }
 }

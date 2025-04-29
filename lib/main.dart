@@ -1,4 +1,4 @@
-import 'package:arvrlearn/splash_screen.dart';
+import 'package:arvrlearn/pages/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
