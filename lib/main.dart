@@ -1,5 +1,5 @@
-import 'package:arvrlearn/pages/Ar_Page.dart';
-import 'package:arvrlearn/pages/splash_screen.dart';
+import 'package:arvrlearn/pages/arvr_page.dart';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,9 +14,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: ArPage(),
+      home: ARVRPage(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
-
