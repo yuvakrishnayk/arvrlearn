@@ -56,19 +56,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextButton(
-                  onPressed: () => _navigateToHome(),
-                  child: Text(
-                    'Skip',
-                    style: TextStyle(color: Colors.amber, fontSize: 16),
-                  ),
-                ),
-              ),
-            ),
             Expanded(
               child: PageView.builder(
                 controller: _pageController,
@@ -197,7 +184,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
               child: const Text(
                 'Skip to Login',
-                style: TextStyle(fontSize: 16, color: Colors.red),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Color.fromARGB(255, 34, 77, 112),
+                ),
               ),
               onPressed: () => _navigateToHome(),
             ),
