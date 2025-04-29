@@ -63,7 +63,7 @@ class _MathsPageState extends State<MathsPage> {
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
-                'Chemistry Basics',
+                'Mathematics',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -294,7 +294,40 @@ class _MathsPageState extends State<MathsPage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => ARVRPage(),
+                                      builder:
+                                          (context) => ARVRPage(
+                                            name: 'Abacus',
+                                            path: 'assets/abacus.glb',
+                                            description:
+                                                'The abacus is one of the earliest known calculating tools, dating back to ancient civilizations.\n\n'
+                                                '• This model shows the classic design with beads that slide on rods\n'
+                                                '• Each column represents a different place value in a numeral system\n'
+                                                '• Moving beads toward the dividing beam represents counting\n'
+                                                '• Skilled users can perform addition, subtraction, multiplication, and division\n'
+                                                '• Some advanced techniques even allow for calculating square roots\n\n'
+                                                'The abacus remains relevant today as a powerful teaching tool for understanding number systems and arithmetic operations.',
+                                            resourceDetails: [
+                                              {
+                                                'label': 'Origin',
+                                                'value':
+                                                    'Ancient Mesopotamia and China',
+                                              },
+                                              {
+                                                'label': 'Invented',
+                                                'value': 'Around 2700 BCE',
+                                              },
+                                              {
+                                                'label': 'Purpose',
+                                                'value':
+                                                    'Mathematical Calculations',
+                                              },
+                                              {
+                                                'label': 'Design',
+                                                'value':
+                                                    'Frame with Rods and Beads',
+                                              },
+                                            ],
+                                          ),
                                     ),
                                   );
                                 },
