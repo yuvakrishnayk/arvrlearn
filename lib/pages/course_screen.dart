@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:arvrlearn/pages/maths_page.dart';
+import 'package:arvrlearn/pages/chemistry_page.dart';
+import 'package:arvrlearn/pages/physics_page.dart';
+import 'package:arvrlearn/pages/social_page.dart';
 
 class CoursesPage extends StatefulWidget {
   const CoursesPage({super.key});
@@ -87,10 +91,7 @@ class _CoursesPageState extends State<CoursesPage> {
         itemBuilder: (context, index) {
           final course = courses[index];
           return Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 8,
-            ),
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
@@ -162,8 +163,7 @@ class _CoursesPageState extends State<CoursesPage> {
                           children: [
                             Expanded(
                               child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     course['title'],
@@ -230,13 +230,54 @@ class _CoursesPageState extends State<CoursesPage> {
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              // Navigate to the corresponding subject page
+                              switch(course['title']) {
+                                case 'Maths':
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>  MathsPage(),
+                                    ),
+                                  );
+                                  break;
+                                case 'Chemistry Basics':
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const ChemistryPage(),
+                                    ),
+                                  );
+                                  break;
+                                case 'Physics':
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const PhysicsPage(),
+                                    ),
+                                  );
+                                  break;
+                                case 'Social Science':
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const SocialPage(),
+                                    ),
+                                  );
+                                  break;
+                                default:
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('${course['title']} coming soon!'),
+                                      duration: const Duration(seconds: 2),
+                                    ),
+                                  );
+                              }
+                            },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: course['color'],
+                              backgroundColor: Colors.deepPurple,
                               foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 12,
-                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 12),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),

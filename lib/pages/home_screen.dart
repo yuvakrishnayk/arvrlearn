@@ -11,6 +11,9 @@ class HomePage extends StatelessWidget {
     final primaryColor = Color(0xFF4A26DB); // Slightly deeper purple
     final accentColor = Color(0xFF00E5BB); // More teal-green
     final backgroundColor = Color(0xFFF8F9FE); // Light background
+    
+    // Common button color for "Start Learning" buttons across all pages
+    final learningButtonColor = Color(0xFF3742FA); // Consistent blue color
 
     return Scaffold(
       backgroundColor: backgroundColor,
