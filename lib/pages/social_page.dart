@@ -290,7 +290,10 @@ class _SocialPageState extends State<SocialPage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => ARVRPage(),
+                                      builder: (context) => ARVRPage(
+                                        name: 'Brain',
+                                        path: 'assets/brain.glb',
+                                      ),
                                     ),
                                   );
                                 },
