@@ -1,7 +1,11 @@
+import 'dart:io';
+import 'package:arvrlearn/apis/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:flutter_sound_record/flutter_sound_record.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ARVRPage extends StatefulWidget {
   final String name;
@@ -10,8 +14,8 @@ class ARVRPage extends StatefulWidget {
   final List<Map<String, String>> resourceDetails;
 
   const ARVRPage({
-    Key? key, 
-    required this.name, 
+    Key? key,
+    required this.name,
     required this.path,
     required this.description,
     required this.resourceDetails,
@@ -26,11 +30,12 @@ class _ARVRPageState extends State<ARVRPage> with SingleTickerProviderStateMixin
   late AnimationController _micController;
   late FlutterTts flutterTts;
   bool isSpeaking = false;
+  final FlutterSoundRecord _audioRecorder = FlutterSoundRecord();
+  String? _recordedFilePath;
 
   // Color scheme
   final Color _primaryColor = const Color(0xFF1565C0);
   final Color _accentColor = const Color(0xFF26A69A);
-  final Color _backgroundColor = const Color(0xFFF5F9FC);
   final Color _cardColor = Colors.white;
   final Color _textDarkColor = const Color(0xFF2D3B45);
   final Color _textLightColor = const Color(0xFF6B7780);
@@ -47,26 +52,42 @@ class _ARVRPageState extends State<ARVRPage> with SingleTickerProviderStateMixin
       vsync: this,
       duration: const Duration(milliseconds: 1500),
     )..repeat(reverse: true);
-    initTts();
+    _initTts();
+    _initRecorder();
   }
 
-  void initTts() {
+  Future<void> _initTts() async {
     flutterTts = FlutterTts();
-    flutterTts.setLanguage("en-US");
-    flutterTts.setSpeechRate(0.5);
-    flutterTts.setVolume(1.0);
-    flutterTts.setPitch(1.0);
-    
+    await flutterTts.setLanguage("en-US");
+    await flutterTts.setSpeechRate(0.5);
+    await flutterTts.setVolume(1.0);
+    await flutterTts.setPitch(1.0);
+
     flutterTts.setCompletionHandler(() {
       setState(() => isSpeaking = false);
     });
+  }
+
+  Future<void> _initRecorder() async {
+    // No initialization needed for FlutterSoundRecord
   }
 
   @override
   void dispose() {
     _micController.dispose();
     flutterTts.stop();
+    _audioRecorder.dispose();
+    _cleanupRecording();
     super.dispose();
+  }
+
+  Future<void> _cleanupRecording() async {
+    if (_recordedFilePath != null) {
+      final file = File(_recordedFilePath!);
+      if (await file.exists()) {
+        await file.delete();
+      }
+    }
   }
 
   Future<void> _speak(String text) async {
@@ -77,29 +98,85 @@ class _ARVRPageState extends State<ARVRPage> with SingleTickerProviderStateMixin
       setState(() => isSpeaking = true);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Explaining about ${widget.name}...', 
-            style: GoogleFonts.poppins()),
+          content: Text(
+            'Explaining about ${widget.name}...',
+            style: GoogleFonts.poppins(),
+          ),
           backgroundColor: _speakButtonColor,
           behavior: SnackBarBehavior.floating,
-          duration: const Duration(seconds: 2),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8)),
         ),
       );
-      await flutterTts.speak(widget.description);
+      await flutterTts.speak(text);
     }
   }
 
-  void _handleVoiceCommand() {
+  Future<void> _handleVoiceCommand() async {
+    if (!_isListening) {
+      await _startRecording();
+    } else {
+      await _stopAndProcessRecording();
+    }
+  }
+
+  Future<void> _startRecording() async {
+    try {
+      final hasPermission = await _audioRecorder.hasPermission();
+      if (!hasPermission) {
+        _showSnackBar('Microphone permission denied', _micInactiveColor);
+        return;
+      }
+
+      await _cleanupRecording();
+      final tempDir = await getTemporaryDirectory();
+      _recordedFilePath = '${tempDir.path}/recording_${DateTime.now().millisecondsSinceEpoch}.wav';
+
+      await _audioRecorder.start(
+        path: _recordedFilePath!,
+        encoder: AudioEncoder.AAC,
+        samplingRate: 16000,
+        bitRate: 256000,
+      );
+      setState(() => _isListening = true);
+    } catch (e) {
+      _showSnackBar('Recording failed: ${e.toString()}', _micInactiveColor);
+      setState(() => _isListening = false);
+    }
+  }
+
+  Future<void> _stopAndProcessRecording() async {
+    try {
+      await _audioRecorder.stop();
+      setState(() => _isListening = false);
+
+      if (_recordedFilePath != null) {
+        final recordedFile = File(_recordedFilePath!);
+        if (await recordedFile.exists()) {
+          final fileSize = await recordedFile.length();
+          if (fileSize < 1024) {
+            throw Exception('Recording too short - please speak clearly');
+          }
+
+          _showSnackBar('Processing your question...', _micActiveColor);
+
+          final response = await ApiService.sendVoice(recordedFile);
+          if (response.success) {
+            await _speak(response.response);
+          } else {
+            throw Exception('Failed to get response from server');
+          }
+        }
+      }
+    } catch (e) {
+      _showSnackBar('Error: ${e.toString()}', _micInactiveColor);
+    }
+  }
+
+  void _showSnackBar(String message, Color backgroundColor) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Voice command feature coming soon!', 
-          style: GoogleFonts.poppins()),
-        backgroundColor: _micInactiveColor,
+        content: Text(message, style: GoogleFonts.poppins()),
+        backgroundColor: backgroundColor,
         behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 2),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8)),
       ),
     );
   }
@@ -225,16 +302,6 @@ class _ARVRPageState extends State<ARVRPage> with SingleTickerProviderStateMixin
     );
   }
 
-  IconData _getIconForLabel(String label) {
-    switch (label) {
-      case 'Model Type': return Icons.psychology_rounded;
-      case 'Detail Level': return Icons.school_rounded;
-      case 'Source': return Icons.dataset_rounded;
-      case 'Annotations': return Icons.label_rounded;
-      default: return Icons.info_outline_rounded;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -270,7 +337,8 @@ class _ARVRPageState extends State<ARVRPage> with SingleTickerProviderStateMixin
                       elevation: 3,
                       color: _cardColor,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                       shadowColor: _primaryColor.withOpacity(0.2),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
@@ -279,26 +347,34 @@ class _ARVRPageState extends State<ARVRPage> with SingleTickerProviderStateMixin
                           children: [
                             Row(
                               children: [
-                                Icon(Icons.lightbulb_outline, color: _accentColor),
+                                Icon(
+                                  Icons.lightbulb_outline,
+                                  color: _accentColor,
+                                ),
                                 const SizedBox(width: 12),
-                                Text('Learning Objectives',
+                                Text(
+                                  'Learning Objectives',
                                   style: GoogleFonts.poppins(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
                                     color: _primaryColor,
-                                  )),
+                                  ),
+                                ),
                               ],
                             ),
                             const SizedBox(height: 12),
                             _buildLearningObjective(
                               "Understand the structure of ${widget.name}",
-                              Icons.check_circle_outline),
+                              Icons.check_circle_outline,
+                            ),
                             _buildLearningObjective(
                               "Identify key features through 3D visualization",
-                              Icons.check_circle_outline),
+                              Icons.check_circle_outline,
+                            ),
                             _buildLearningObjective(
                               "Explore the model from different angles",
-                              Icons.check_circle_outline),
+                              Icons.check_circle_outline,
+                            ),
                           ],
                         ),
                       ),
@@ -308,7 +384,8 @@ class _ARVRPageState extends State<ARVRPage> with SingleTickerProviderStateMixin
                       elevation: 4,
                       color: _cardColor,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                       shadowColor: _primaryColor.withOpacity(0.2),
                       child: Padding(
                         padding: const EdgeInsets.all(20.0),
@@ -316,15 +393,20 @@ class _ARVRPageState extends State<ARVRPage> with SingleTickerProviderStateMixin
                           children: [
                             Row(
                               children: [
-                                Icon(Icons.view_in_ar_rounded, color: _primaryColor),
+                                Icon(
+                                  Icons.view_in_ar_rounded,
+                                  color: _primaryColor,
+                                ),
                                 const SizedBox(width: 12),
                                 Expanded(
-                                  child: Text('Interactive Learning Model',
+                                  child: Text(
+                                    'Interactive Learning Model',
                                     style: GoogleFonts.poppins(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w600,
                                       color: _primaryColor,
-                                    )),
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -334,7 +416,11 @@ class _ARVRPageState extends State<ARVRPage> with SingleTickerProviderStateMixin
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
                                 gradient: LinearGradient(
-                                  colors: [Colors.grey.shade50, Colors.grey.shade100]),
+                                  colors: [
+                                    Colors.grey.shade50,
+                                    Colors.grey.shade100,
+                                  ],
+                                ),
                                 border: Border.all(color: Colors.grey.shade200),
                                 boxShadow: [
                                   BoxShadow(
@@ -361,25 +447,34 @@ class _ARVRPageState extends State<ARVRPage> with SingleTickerProviderStateMixin
                             const SizedBox(height: 16),
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                vertical: 12, horizontal: 16),
+                                vertical: 12,
+                                horizontal: 16,
+                              ),
                               decoration: BoxDecoration(
                                 color: _accentColor.withOpacity(0.08),
                                 borderRadius: BorderRadius.circular(14),
-                                border: Border.all(color: _accentColor.withOpacity(0.2)),
+                                border: Border.all(
+                                  color: _accentColor.withOpacity(0.2),
+                                ),
                               ),
                               child: Column(
                                 children: [
                                   Row(
                                     children: [
-                                      Icon(Icons.touch_app_rounded, color: _accentColor),
+                                      Icon(
+                                        Icons.touch_app_rounded,
+                                        color: _accentColor,
+                                      ),
                                       const SizedBox(width: 12),
                                       Expanded(
-                                        child: Text('How to interact:',
+                                        child: Text(
+                                          'How to interact:',
                                           style: GoogleFonts.poppins(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w600,
                                             color: _textDarkColor,
-                                          )),
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -404,7 +499,8 @@ class _ARVRPageState extends State<ARVRPage> with SingleTickerProviderStateMixin
                       elevation: 4,
                       color: _cardColor,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Column(
@@ -412,14 +508,19 @@ class _ARVRPageState extends State<ARVRPage> with SingleTickerProviderStateMixin
                           children: [
                             Row(
                               children: [
-                                Icon(Icons.menu_book_rounded, color: _primaryColor),
+                                Icon(
+                                  Icons.menu_book_rounded,
+                                  color: _primaryColor,
+                                ),
                                 const SizedBox(width: 12),
-                                Text('Learning Material',
+                                Text(
+                                  'Learning Material',
                                   style: GoogleFonts.poppins(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
                                     color: _primaryColor,
-                                  )),
+                                  ),
+                                ),
                               ],
                             ),
                             const SizedBox(height: 16),
@@ -433,33 +534,41 @@ class _ARVRPageState extends State<ARVRPage> with SingleTickerProviderStateMixin
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('About ${widget.name}',
+                                  Text(
+                                    'About ${widget.name}',
                                     style: GoogleFonts.poppins(
                                       color: _textDarkColor,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
-                                    )),
+                                    ),
+                                  ),
                                   const SizedBox(height: 8),
-                                  Text(widget.description,
+                                  Text(
+                                    widget.description,
                                     style: GoogleFonts.poppins(
                                       color: _textDarkColor,
                                       fontSize: 14,
                                       height: 1.6,
-                                    )),
+                                    ),
+                                  ),
                                   const SizedBox(height: 16),
-                                  Text('Educational Resource Details',
+                                  Text(
+                                    'Educational Resource Details',
                                     style: GoogleFonts.poppins(
                                       color: _textDarkColor,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
-                                    )),
+                                    ),
+                                  ),
                                   const SizedBox(height: 8),
                                   Container(
                                     padding: const EdgeInsets.all(12),
                                     decoration: BoxDecoration(
                                       color: Colors.grey.shade100,
                                       borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(color: Colors.grey.shade200),
+                                      border: Border.all(
+                                        color: Colors.grey.shade200,
+                                      ),
                                     ),
                                     child: Column(
                                       children: [
@@ -467,7 +576,9 @@ class _ARVRPageState extends State<ARVRPage> with SingleTickerProviderStateMixin
                                           _buildResourceInfo(
                                             widget.resourceDetails[i]['label']!,
                                             widget.resourceDetails[i]['value']!,
-                                            _getIconForLabel(widget.resourceDetails[i]['label']!),
+                                            _getIconForLabel(
+                                              widget.resourceDetails[i]['label']!,
+                                            ),
                                           ),
                                           if (i != widget.resourceDetails.length - 1)
                                             const Divider(height: 16),
@@ -508,12 +619,14 @@ class _ARVRPageState extends State<ARVRPage> with SingleTickerProviderStateMixin
           Icon(icon, color: _accentColor, size: 20),
           const SizedBox(width: 12),
           Expanded(
-            child: Text(text,
+            child: Text(
+              text,
               style: GoogleFonts.poppins(
                 fontSize: 14,
                 color: _textDarkColor,
                 height: 1.4,
-              )),
+              ),
+            ),
           ),
         ],
       ),
@@ -525,21 +638,37 @@ class _ARVRPageState extends State<ARVRPage> with SingleTickerProviderStateMixin
       children: [
         Icon(icon, size: 16, color: _textLightColor),
         const SizedBox(width: 8),
-        Text('$label: ',
+        Text(
+          '$label: ',
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w500,
             fontSize: 13,
             color: _textDarkColor,
-          )),
+          ),
+        ),
         Expanded(
-          child: Text(value,
-            style: GoogleFonts.poppins(
-              fontSize: 13, 
-              color: _textLightColor),
+          child: Text(
+            value,
+            style: GoogleFonts.poppins(fontSize: 13, color: _textLightColor),
             overflow: TextOverflow.ellipsis,
           ),
         ),
       ],
     );
+  }
+
+  IconData _getIconForLabel(String label) {
+    switch (label) {
+      case 'Model Type':
+        return Icons.psychology_rounded;
+      case 'Detail Level':
+        return Icons.school_rounded;
+      case 'Source':
+        return Icons.dataset_rounded;
+      case 'Annotations':
+        return Icons.label_rounded;
+      default:
+        return Icons.info_outline_rounded;
+    }
   }
 }

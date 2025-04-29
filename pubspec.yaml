@@ -45,6 +45,8 @@ dependencies:
   google_fonts: ^4.0.4
   vector_math: ^2.1.4
   intl: ^0.20.2
+  flutter_sound_record: ^3.3.2
+  http_parser: ^4.1.2
 
 dev_dependencies:
   flutter_test:
