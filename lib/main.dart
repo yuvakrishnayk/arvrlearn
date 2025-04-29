@@ -1,4 +1,4 @@
-import 'package:arvrlearn/pages/arvr_page.dart';
+import 'package:arvrlearn/pages/arvr_screen.dart';
 
 import 'package:flutter/material.dart';
 
