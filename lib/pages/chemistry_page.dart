@@ -295,11 +295,42 @@ class _ChemistryPageState extends State<ChemistryPage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => ARVRPage(
-                                        name: 'Brain',
-                                        path: 'assets/brain.glb',
-
-                                      ),
+                                      builder:
+                                          (context) => ARVRPage(
+                                            name: 'Brain',
+                                            path: 'assets/brain.glb',
+                                            description:
+                                                'This detailed neuroanatomical model reveals the complex structures of the human brain. Explore:\n\n'
+                                                '• Cerebral hemispheres with color-coded lobes (frontal, parietal, temporal, occipital)\n'
+                                                '• Brainstem components: midbrain, pons, and medulla oblongata\n'
+                                                '• Cerebellar anatomy and vermis structure\n'
+                                                '• Limbic system structures including hippocampus and amygdala\n'
+                                                '• Ventricular system and basal ganglia organization\n\n'
+                                                'The model highlights functional neuroanatomy with interactive dissection capabilities, showing neural pathways '
+                                                'and blood supply through the Circle of Willis.',
+                                            resourceDetails: [
+                                              {
+                                                'label': 'Model Type',
+                                                'value':
+                                                    'Dissectible Neuroanatomy',
+                                              },
+                                              {
+                                                'label': 'Detail Level',
+                                                'value':
+                                                    'Medical Education Standard',
+                                              },
+                                              {
+                                                'label': 'Source',
+                                                'value':
+                                                    'Visible Human Project Dataset',
+                                              },
+                                              {
+                                                'label': 'Annotations',
+                                                'value':
+                                                    '200+ Structural Labels',
+                                              },
+                                            ],
+                                          ),
                                     ),
                                   );
                                 },

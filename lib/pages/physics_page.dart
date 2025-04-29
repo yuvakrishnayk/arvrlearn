@@ -285,10 +285,40 @@ class _PhysicsPageState extends State<PhysicsPage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => ARVRPage(
-                                        name: 'Brain',
-                                        path: 'assets/brain.glb',
-                                      ),
+                                      builder:
+                                          (context) => ARVRPage(
+                                            name: 'Newton\'s Cradle',
+                                            path: 'assets/newtons_cradle.glb',
+                                            description:
+                                                'Newton\'s Cradle demonstrates key principles of physics in a simple yet elegant device:\n\n'
+                                                '• Conservation of momentum and energy are visualized in real-time\n'
+                                                '• When one ball swings in from the left, another ball on the right swings out with similar velocity\n'
+                                                '• The central balls remain nearly stationary, acting as energy transmitters\n'
+                                                '• The device illustrates Newton\'s Third Law: for every action, there is an equal and opposite reaction\n'
+                                                '• Energy is transferred through the system with minimal loss\n\n'
+                                                'This educational model allows you to interact with the pendulums and observe these physical principles in action.',
+                                            resourceDetails: [
+                                              {
+                                                'label': 'Principles',
+                                                'value':
+                                                    'Conservation of Momentum & Energy',
+                                              },
+                                              {
+                                                'label': 'Mechanism',
+                                                'value':
+                                                    'Suspended Pendulum System',
+                                              },
+                                              {
+                                                'label': 'Named After',
+                                                'value': 'Sir Isaac Newton',
+                                              },
+                                              {
+                                                'label': 'Demonstrates',
+                                                'value':
+                                                    'Newton\'s Laws of Motion',
+                                              },
+                                            ],
+                                          ),
                                     ),
                                   );
                                 },

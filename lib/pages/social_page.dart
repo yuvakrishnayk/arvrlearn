@@ -291,8 +291,27 @@ class _SocialPageState extends State<SocialPage> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ARVRPage(
-                                        name: 'Brain',
-                                        path: 'assets/brain.glb',
+                                        name: 'Mountain',
+                                        path: 'assets/mountain.glb',
+                                        description: 'Explore the 3D model of a mountain in AR/VR.Towering peaks pierce the sky, their snow-capped summits glistening in the sunlight as clouds swirl around their slopes like ethereal scarves. These ancient stone giants have stood for millennia, witnessing the passage of time while nurturing unique ecosystems at every elevation.',
+                                        resourceDetails: [
+                                          {
+                                            'label': 'Model Type',
+                                            'value': '3D Mountain Model',
+                                          },
+                                          {
+                                            'label': 'Detail Level',
+                                            'value': 'Educational Standard',
+                                          },
+                                          {
+                                            'label': 'Source',
+                                            'value': 'Geographic Dataset',
+                                          },
+                                          {
+                                            'label': 'Annotations',
+                                            'value': 'Terrain Features',
+                                          },
+                                        ],
                                       ),
                                     ),
                                   );
