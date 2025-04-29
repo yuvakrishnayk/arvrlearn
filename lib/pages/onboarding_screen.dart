@@ -1,4 +1,4 @@
-import 'package:arvrlearn/pages/bottom_navigation.dart';
+import 'package:arvrlearn/components/bottom_navigation.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingScreen extends StatefulWidget {
