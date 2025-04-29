@@ -11,9 +11,9 @@ class HomePage extends StatelessWidget {
     final primaryColor = Color(0xFF4A26DB); // Slightly deeper purple
     final accentColor = Color(0xFF00E5BB); // More teal-green
     final backgroundColor = Color(0xFFF8F9FE); // Light background
-    
+
     // Common button color for "Start Learning" buttons across all pages
-    final learningButtonColor = Color(0xFF3742FA); // Consistent blue color
+    // Consistent blue color
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -126,17 +126,21 @@ class HomePage extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8), // Reduced padding to accommodate larger animation
+                padding: const EdgeInsets.all(
+                  8,
+                ), // Reduced padding to accommodate larger animation
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withAlpha(51), // 0.2 * 255 ≈ 51
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: SizedBox(
                   width: 70, // Increased from 45
                   height: 60, // Increased from 40
                   child: Lottie.asset(
-                    'assets/fire.json', 
-                    fit: BoxFit.contain, // Changed to contain for better proportions
+                    'assets/fire.json',
+                    fit:
+                        BoxFit
+                            .contain, // Changed to contain for better proportions
                     repeat: true,
                     animate: true,
                   ),
@@ -162,21 +166,6 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             ],
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: accentColor,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            onPressed: () {},
-            child: const Text(
-              'Check In',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
           ),
         ],
       ),
@@ -567,7 +556,7 @@ class HomePage extends StatelessWidget {
                 Icon(Icons.insights, size: 18, color: accentColor),
                 const SizedBox(width: 8),
                 Text(
-                  'Your best day was Sunday with 90 minutes!',
+                  'Your best day was Sunday',
                   style: TextStyle(color: Colors.grey[700], fontSize: 13),
                 ),
               ],

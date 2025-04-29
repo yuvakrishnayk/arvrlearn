@@ -1,6 +1,6 @@
+import 'package:arvrlearn/pages/arvr_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:arvrlearn/Models/course_model.dart';
-import 'package:arvrlearn/ar_vr.dart';
 
 class PhysicsPage extends StatefulWidget {
   const PhysicsPage({super.key});
@@ -285,12 +285,7 @@ class _PhysicsPageState extends State<PhysicsPage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder:
-                                          (context) => ARVRPage(
-                                            name:
-                                                course.subtopics[subtopicIndex],
-                                            path: 'assets/physics.glb',
-                                          ),
+                                      builder: (context) => ARVRPage(),
                                     ),
                                   );
                                 },
@@ -314,17 +309,6 @@ class _PhysicsPageState extends State<PhysicsPage> {
           // Extra space at the bottom
           SliverToBoxAdapter(child: SizedBox(height: 30)),
         ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          // Open the first topic by default
-          setState(() {
-            _expandedIndex = 0;
-          });
-        },
-        label: Text('Start Learning'),
-        icon: Icon(Icons.play_arrow),
-        backgroundColor: Colors.deepPurple,
       ),
     );
   }

@@ -1,6 +1,6 @@
+import 'package:arvrlearn/pages/arvr_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:arvrlearn/Models/course_model.dart';
-import 'package:arvrlearn/ar_vr.dart';
 
 class SocialPage extends StatefulWidget {
   const SocialPage({super.key});
@@ -268,9 +268,7 @@ class _SocialPageState extends State<SocialPage> {
                                 leading: CircleAvatar(
                                   radius: 12,
                                   backgroundColor: Colors.deepPurple
-                                      .withOpacity(
-                                    0.1,
-                                  ),
+                                      .withOpacity(0.1),
                                   child: Text(
                                     '${subtopicIndex + 1}',
                                     style: TextStyle(
@@ -292,12 +290,7 @@ class _SocialPageState extends State<SocialPage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder:
-                                          (context) => ARVRPage(
-                                            name:
-                                                course.subtopics[subtopicIndex],
-                                            path: 'assets/social.glb',
-                                          ),
+                                      builder: (context) => ARVRPage(),
                                     ),
                                   );
                                 },
@@ -321,17 +314,6 @@ class _SocialPageState extends State<SocialPage> {
           // Extra space at the bottom
           SliverToBoxAdapter(child: SizedBox(height: 30)),
         ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          // Open the first topic by default
-          setState(() {
-            _expandedIndex = 0;
-          });
-        },
-        label: Text('Start Learning'),
-        icon: Icon(Icons.play_arrow),
-        backgroundColor: Colors.deepPurple,
       ),
     );
   }
