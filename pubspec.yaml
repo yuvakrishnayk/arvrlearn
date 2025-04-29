@@ -36,6 +36,12 @@ dependencies:
   cupertino_icons: ^1.0.8
   intl: ^0.20.2
   lottie: ^3.3.1
+  model_viewer_plus: ^1.9.3
+  ar_flutter_plugin_2: ^0.0.3
+  flutter_tts: ^4.2.2
+  speech_to_text: ^7.0.0
+  google_fonts: ^6.2.1
+  vector_math: ^2.1.4
 
 dev_dependencies:
   flutter_test:
@@ -58,7 +64,6 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
-    - assets/fire.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
