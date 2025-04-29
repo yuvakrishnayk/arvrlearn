@@ -12,8 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:vector_math/vector_math_64.dart' hide Colors;
 
 class ARVRPage extends StatefulWidget {
@@ -40,13 +38,9 @@ class ARVRPageState extends State<ARVRPage> with TickerProviderStateMixin {
 
   // Voice features
   final FlutterTts flutterTts = FlutterTts();
-  late stt.SpeechToText _speech;
-  bool _isListening = false;
-  String _voiceText = '';
 
   // Animations
   late AnimationController _statusController;
-  late AnimationController _micController;
   late AnimationController _textFadeController;
   late Animation<double> _textOpacity;
   String _statusMessage = "Initializing AR...";
@@ -56,18 +50,12 @@ class ARVRPageState extends State<ARVRPage> with TickerProviderStateMixin {
     super.initState();
     GoogleFonts.config.allowRuntimeFetching = true;
     _initializeTts();
-    _initializeSpeech();
     _initializeAnimations();
   }
 
   void _initializeAnimations() {
     _statusController = AnimationController(
       duration: const Duration(milliseconds: 1200),
-      vsync: this,
-    )..repeat(reverse: true);
-
-    _micController = AnimationController(
-      duration: const Duration(milliseconds: 1500),
       vsync: this,
     )..repeat(reverse: true);
 
@@ -88,28 +76,11 @@ class ARVRPageState extends State<ARVRPage> with TickerProviderStateMixin {
     await flutterTts.setPitch(1.0);
   }
 
-  Future<void> _initializeSpeech() async {
-    _speech = stt.SpeechToText();
-    await _requestMicrophonePermission();
-    await _speech.initialize(
-      onStatus: _onSpeechStatus,
-      onError: _onSpeechError,
-    );
-  }
-
-  Future<void> _requestMicrophonePermission() async {
-    if (await Permission.microphone.request() != PermissionStatus.granted) {
-      _showStatus("Microphone access required for voice commands", duration: 3);
-    }
-  }
-
   @override
   void dispose() {
     arSessionManager.dispose();
     flutterTts.stop();
-    _speech.stop();
     _statusController.dispose();
-    _micController.dispose();
     _textFadeController.dispose();
     super.dispose();
   }
@@ -163,93 +134,6 @@ class ARVRPageState extends State<ARVRPage> with TickerProviderStateMixin {
         body: Stack(
           children: [
             ARView(onARViewCreated: onARViewCreated),
-
-            // Voice input text display
-            Positioned(
-              bottom: 140,
-              left: 0,
-              right: 0,
-              child: AnimatedSwitcher(
-                duration: Duration(milliseconds: 300),
-                child:
-                    _voiceText.isNotEmpty
-                        ? ScaleTransition(
-                          scale: CurvedAnimation(
-                            parent: _textFadeController,
-                            curve: Curves.easeOutBack,
-                          ),
-                          child: FadeTransition(
-                            opacity: _textOpacity,
-                            child: Center(
-                              child: Container(
-                                key: ValueKey<String>(_voiceText),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 24,
-                                  vertical: 16,
-                                ),
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Colors.blue.shade800.withOpacity(0.9),
-                                      Colors.blue.shade600.withOpacity(0.9),
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ),
-                                  borderRadius: BorderRadius.circular(30),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.3),
-                                      blurRadius: 10,
-                                      offset: Offset(0, 4),
-                                    ),
-                                  ],
-                                  border: Border.all(
-                                    color: Colors.white.withOpacity(0.2),
-                                    width: 1,
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    AnimatedBuilder(
-                                      animation: _micController,
-                                      builder: (context, child) {
-                                        return Transform.scale(
-                                          scale:
-                                              _isListening
-                                                  ? 1.0 +
-                                                      _micController.value * 0.2
-                                                  : 1.0,
-                                          child: Icon(
-                                            _isListening
-                                                ? Icons.mic
-                                                : Icons.auto_awesome,
-                                            color: Colors.white,
-                                            size: 20,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                    SizedBox(width: 12),
-                                    Text(
-                                      _voiceText,
-                                      style: GoogleFonts.roboto(
-                                        color: Colors.white,
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w600,
-                                        letterSpacing: 0.5,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                        : SizedBox.shrink(),
-              ),
-            ),
 
             // Status indicator
             if (isLoading || _statusMessage.isNotEmpty)
@@ -370,13 +254,6 @@ class ARVRPageState extends State<ARVRPage> with TickerProviderStateMixin {
               onPressed: () => _speak(widget.name ?? "Brain Model"),
               color: Colors.green.shade700,
             ),
-            SizedBox(width: 16),
-            _buildControlButton(
-              icon: Icons.mic,
-              label: "Ask",
-              onPressed: _handleVoiceCommand,
-              color: _isListening ? Colors.blue.shade700 : Colors.red.shade700,
-            ),
           ],
         ),
       ),
@@ -399,24 +276,9 @@ class ARVRPageState extends State<ARVRPage> with TickerProviderStateMixin {
             color: color ?? Colors.white24,
             shape: BoxShape.circle,
           ),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              IconButton(
-                icon: Icon(icon, color: Colors.white),
-                onPressed: onPressed,
-              ),
-              if (label == "Ask" && _isListening)
-                ScaleTransition(
-                  scale: _micController,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.2),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ),
-            ],
+          child: IconButton(
+            icon: Icon(icon, color: Colors.white),
+            onPressed: onPressed,
           ),
         ),
         SizedBox(height: 6),
@@ -475,7 +337,6 @@ class ARVRPageState extends State<ARVRPage> with TickerProviderStateMixin {
                 _buildHelpItem(Icons.touch_app, 'Tap model to select'),
                 _buildHelpItem(Icons.pan_tool, 'Tap surface to place'),
                 _buildHelpItem(Icons.volume_up, 'Tap speak for pronunciation'),
-                _buildHelpItem(Icons.mic, 'Hold mic for voice commands'),
               ],
             ),
             actions: [
@@ -543,67 +404,6 @@ class ARVRPageState extends State<ARVRPage> with TickerProviderStateMixin {
       setState(() => spiderNode = null);
       _showStatus("Model position reset");
     }
-  }
-
-  void _handleVoiceCommand() async {
-    if (!_isListening) {
-      setState(() {
-        _isListening = true;
-        _voiceText = 'Listening...';
-      });
-      _textFadeController.stop();
-      _textFadeController.reset();
-
-      if (await _speech.initialize()) {
-        _speech.listen(
-          onResult: (result) {
-            setState(() {
-              _voiceText = result.recognizedWords;
-              if (result.finalResult) {
-                _processCommand(result.recognizedWords);
-                _textFadeController.forward();
-              }
-            });
-          },
-          listenFor: const Duration(seconds: 5),
-        );
-      }
-    } else {
-      _stopListening();
-    }
-  }
-
-  void _stopListening() {
-    _speech.stop();
-    setState(() {
-      _isListening = false;
-    });
-    _textFadeController.forward();
-  }
-
-  void _processCommand(String command) {
-    final cleaned = command.toLowerCase();
-    final modelName = widget.name?.toLowerCase() ?? "brain model";
-
-    if (cleaned.contains('reset')) {
-      _resetApple();
-    } else if (cleaned.contains(modelName)) {
-      _speak(widget.name ?? "Brain Model");
-    } else if (cleaned.contains('move')) {
-      setState(() => isMovingApple = true);
-    }
-    _showStatus(
-      "Processed: ${command.length > 20 ? command.substring(0, 20) + '...' : command}",
-    );
-  }
-
-  void _onSpeechStatus(String status) {
-    if (status == 'done') _stopListening();
-  }
-
-  void _onSpeechError(error) {
-    _stopListening();
-    _showStatus("Voice error: ${error.errorMsg}");
   }
 
   Future<void> onPlaneTap(List<ARHitTestResult> hitTestResults) async {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
+import '../apis/api_func.dart';
 
 class ChatbotPage extends StatefulWidget {
   const ChatbotPage({super.key});
@@ -11,6 +11,8 @@ class ChatbotPage extends StatefulWidget {
 
 class _ChatbotPageState extends State<ChatbotPage> {
   final TextEditingController _messageController = TextEditingController();
+  final ApiFunc _apiFunc = ApiFunc();
+
   final List<Map<String, dynamic>> _messages = [
     {
       'isUser': false,
@@ -23,15 +25,17 @@ class _ChatbotPageState extends State<ChatbotPage> {
 
   List<String> _attachedImages = [];
 
-  void _sendMessage() {
+  void _sendMessage() async {
     if (_messageController.text.trim().isEmpty && _attachedImages.isEmpty)
       return;
+
+    final userMessage = _messageController.text;
 
     setState(() {
       // Add user message
       _messages.add({
         'isUser': true,
-        'message': _messageController.text,
+        'message': userMessage,
         'time': DateTime.now(),
         'image': _attachedImages.isNotEmpty ? _attachedImages : null,
       });
@@ -39,20 +43,30 @@ class _ChatbotPageState extends State<ChatbotPage> {
       // Clear input and attached images
       _messageController.clear();
       _attachedImages = [];
+    });
 
-      // Simulate bot response after a short delay
-      Future.delayed(const Duration(seconds: 1), () {
-        setState(() {
-          _messages.add({
-            'isUser': false,
-            'message':
-                'I understand you\'re interested in AR/VR technology. Would you like me to recommend some learning resources?',
-            'time': DateTime.now(),
-            'image': null,
-          });
+    try {
+      // Call API to get response
+      final botResponse = await _apiFunc.generateResponse(userMessage);
+
+      setState(() {
+        _messages.add({
+          'isUser': false,
+          'message': botResponse,
+          'time': DateTime.now(),
+          'image': null,
         });
       });
-    });
+    } catch (e) {
+      setState(() {
+        _messages.add({
+          'isUser': false,
+          'message': 'Sorry, I encountered an error: $e',
+          'time': DateTime.now(),
+          'image': null,
+        });
+      });
+    }
   }
 
   void _attachImage() {
