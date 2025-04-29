@@ -1,3 +1,7 @@
+import 'package:arvrlearn/pages/arvr_labs_page.dart';
+import 'package:arvrlearn/pages/assignments_page.dart';
+import 'package:arvrlearn/pages/quiz.dart';
+import 'package:arvrlearn/pages/study_groups_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
@@ -8,12 +12,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Updated color theme
-    final primaryColor = Color(0xFF4A26DB); // Slightly deeper purple
-    final accentColor = Color(0xFF00E5BB); // More teal-green
-    final backgroundColor = Color(0xFFF8F9FE); // Light background
-
-    // Common button color for "Start Learning" buttons across all pages
-    // Consistent blue color
+    final primaryColor = Color(0xFF4A26DB);
+    final accentColor = Color(0xFF00E5BB);
+    final backgroundColor = Color(0xFFF8F9FE);
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -35,9 +36,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Streak container at the top
             _buildStreakContainer(primaryColor, accentColor),
-
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -68,10 +67,8 @@ class HomePage extends StatelessWidget {
                   const SizedBox(height: 24),
                   _buildDailyGoalCard(primaryColor, accentColor),
                   const SizedBox(height: 24),
-
                   // Student section
-                  _buildStudentSection(primaryColor, accentColor),
-
+                  _buildStudentSection(primaryColor, accentColor, context),
                   const SizedBox(height: 24),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -126,21 +123,17 @@ class HomePage extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(
-                  8,
-                ), // Reduced padding to accommodate larger animation
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.white.withAlpha(51), // 0.2 * 255 ≈ 51
+                  color: Colors.white.withAlpha(51),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: SizedBox(
-                  width: 70, // Increased from 45
-                  height: 60, // Increased from 40
+                  width: 70,
+                  height: 60,
                   child: Lottie.asset(
                     'assets/fire.json',
-                    fit:
-                        BoxFit
-                            .contain, // Changed to contain for better proportions
+                    fit: BoxFit.contain,
                     repeat: true,
                     animate: true,
                   ),
@@ -253,7 +246,11 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildStudentSection(Color primaryColor, Color accentColor) {
+  Widget _buildStudentSection(
+    Color primaryColor,
+    Color accentColor,
+    BuildContext context,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -274,22 +271,42 @@ class HomePage extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: _buildStudentCard(
-                'Assignments',
-                '3 pending',
-                Icons.assignment,
-                Colors.orange,
-                accentColor,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(16),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AssignmentsPage(),
+                    ),
+                  );
+                },
+                child: _buildStudentCard(
+                  'Assignments',
+                  '3 pending',
+                  Icons.assignment,
+                  Colors.orange,
+                  accentColor,
+                ),
               ),
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: _buildStudentCard(
-                'Quizzes',
-                'New quiz available',
-                Icons.quiz,
-                Colors.blue,
-                accentColor,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(16),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const QuizPage()),
+                  );
+                },
+                child: _buildStudentCard(
+                  'Quizzes',
+                  'New quiz available',
+                  Icons.quiz,
+                  Colors.blue,
+                  accentColor,
+                ),
               ),
             ),
           ],
@@ -298,22 +315,44 @@ class HomePage extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: _buildStudentCard(
-                'Study Groups',
-                '5 active groups',
-                Icons.group,
-                Colors.green,
-                accentColor,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(16),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const StudyGroupsPage(),
+                    ),
+                  );
+                },
+                child: _buildStudentCard(
+                  'Study Groups',
+                  '5 active groups',
+                  Icons.group,
+                  Colors.green,
+                  accentColor,
+                ),
               ),
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: _buildStudentCard(
-                'AR/VR Labs',
-                '2 new labs',
-                Icons.view_in_ar,
-                primaryColor,
-                accentColor,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(16),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ARVRLabsPage(),
+                    ),
+                  );
+                },
+                child: _buildStudentCard(
+                  'AR/VR Labs',
+                  '2 new labs',
+                  Icons.view_in_ar,
+                  primaryColor,
+                  accentColor,
+                ),
               ),
             ),
           ],
@@ -365,33 +404,33 @@ class HomePage extends StatelessWidget {
   Widget _buildRecommendedLessons(Color primaryColor, Color accentColor) {
     final lessons = [
       {
-        'title': 'AR Foundations',
+        'title': 'Maths',
         'progress': 0.3,
-        'category': 'Beginner',
+
         'icon': Icons.view_in_ar,
         'color': Colors.blue,
         'time': '4 hrs',
       },
       {
-        'title': 'VR Interactions',
+        'title': 'Chemistry',
         'progress': 0.8,
-        'category': 'Intermediate',
+
         'icon': Icons.videogame_asset,
         'color': Colors.green,
         'time': '6 hrs',
       },
       {
-        'title': 'AI in ARVR',
+        'title': 'Physics',
         'progress': 0.1,
-        'category': 'Advanced',
+
         'icon': Icons.smart_toy,
         'color': Colors.red,
         'time': '8 hrs',
       },
       {
-        'title': 'Immersive UX',
+        'title': 'Social Science',
         'progress': 0.5,
-        'category': 'Intermediate',
+
         'icon': Icons.phone_android,
         'color': Colors.purple,
         'time': '5 hrs',
@@ -444,26 +483,8 @@ class HomePage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 5,
-                      ),
-                      decoration: BoxDecoration(
-                        color: primaryColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        lesson['category'] as String,
-                        style: TextStyle(
-                          color: primaryColor,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 10),
+
                     Text(
                       lesson['title'] as String,
                       style: const TextStyle(
@@ -590,7 +611,7 @@ class HomePage extends StatelessWidget {
               BoxShadow(
                 color: accentColor.withOpacity(0.3),
                 blurRadius: 6,
-                offset: Offset(0, 3),
+                offset: const Offset(0, 3),
               ),
             ],
           ),
