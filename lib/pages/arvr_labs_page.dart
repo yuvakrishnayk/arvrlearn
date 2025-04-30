@@ -28,25 +28,56 @@ class _ARVRLabsPageState extends State<ARVRLabsPage> {
         'sections': [
           {
             'title': 'Farm Animals',
-            'image':
-                'https://th.bing.com/th/id/OIP.XNFWs1LsYEpCG0XGQD-L9AHaF0?w=205&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7',
             'facts': [
-              'Cows say "moo" and give us milk',
-              'Pigs like to roll in mud to stay cool',
-              'Chickens lay eggs we can eat',
+              'Cows have four stomachs to help them digest grass',
+              'Sheep grow a new coat of wool every year',
+              'Horses can sleep standing up on their legs',
+              'Ducks have waterproof feathers that keep them dry',
             ],
-            'activity': 'Drag the animal to its favorite food!',
+            'activity':
+                'AR Farm Adventure: Create your own virtual farm! Place 3D animals anywhere in your room and care for them. Feed cows hay, give horses carrots, and watch sheep grow wool. Complete farm challenges like collecting eggs from chickens or milking cows. Record animal sounds and match them to the right animals to earn farm badges!',
+            'interactive': true,
+            'difficulty': 'easy',
+            'goals': [
+              'Identify 5 different farm animals',
+              'Learn what each animal eats',
+              'Discover animal lifecycles',
+              'Complete farm caretaker tasks',
+            ],
+            'skills': ['observation', 'matching', 'caretaking'],
           },
           {
             'title': 'Jungle Animals',
-            'image':
-                'https://th.bing.com/th/id/OIP.XNFWs1LsYEpCG0XGQD-L9AHaF0?w=205&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7',
             'facts': [
-              'Lions are called the "king of the jungle"',
-              'Monkeys love to eat bananas',
-              'Elephants use their trunks to drink water',
+              'Tigers have striped skin, not just striped fur',
+              'Monkeys use their tails to hang from trees',
+              'Giraffes have the same number of neck bones as humans: seven',
+              'Elephants can recognize themselves in a mirror',
             ],
-            'activity': 'Match the animal to its home!',
+            'activity':
+                'Jungle Rescue Mission: Your AR device transforms into a wildlife explorer tool! Animals are hiding in your room - find them using animal tracking clues and jungle sounds. Use hand gestures to build bridges, clear paths, and help reunite baby animals with their parents. Create a safe habitat for each animal with the right food, water, and shelter. Take photos for your digital wildlife journal and earn conservation badges!',
+            'interactive': true,
+            'difficulty': 'medium',
+            'goals': [
+              'Rescue 5 jungle animals',
+              'Create appropriate habitats',
+              'Learn about animal adaptations',
+              'Complete wildlife researcher tasks',
+            ],
+            'skills': ['problem-solving', 'empathy', 'conservation awareness'],
+          },
+          {
+            'title': 'Ocean Animals',
+            'facts': [
+              'Octopuses have three hearts and blue blood',
+              'Dolphins sleep with one eye open',
+              'Starfish can regrow their arms if they lose one',
+              'Whales breathe air even though they live in water',
+            ],
+            'activity':
+                'Underwater Discovery: Dive into a virtual ocean! Use hand gestures to swim deeper and discover marine creatures. Collect information about each animal you find to complete your digital ocean journal.',
+            'interactive': true,
+            'difficulty': 'medium',
           },
         ],
       },
@@ -62,14 +93,29 @@ class _ARVRLabsPageState extends State<ARVRLabsPage> {
         'sections': [
           {
             'title': 'Seed to Plant',
-            'image':
-                'https://cdn.leverageedu.com/blog/wp-content/uploads/2020/08/05195501/Class-11-plant-growth-and-development.png',
             'facts': [
-              'Plants need water, sun, and soil to grow',
-              'Roots grow down into the soil',
-              'Leaves use sunlight to make food',
+              'Seeds need water to start growing (germination)',
+              'The first thing to grow from a seed is the root',
+              'The stem grows up toward the sunlight',
+              'Leaves make food for the plant using sunlight',
             ],
-            'activity': 'Put the growth stages in order!',
+            'activity':
+                'Virtual Garden: Plant digital seeds and control their growth using hand gestures. Add water, sunlight, and nutrients at the right time to help your plant grow. Can you grow a complete healthy plant?',
+            'interactive': true,
+            'difficulty': 'easy',
+          },
+          {
+            'title': 'Plant Parts',
+            'facts': [
+              'Roots absorb water and nutrients from the soil',
+              'The stem supports the plant and carries water to leaves',
+              'Leaves make food using sunlight and air',
+              'Flowers help plants make new seeds',
+            ],
+            'activity':
+                'Plant Doctor: Diagnose what\'s wrong with different virtual plants. Is it getting too much water? Not enough sun? Fix the problems by adjusting conditions and watch the plants recover.',
+            'interactive': true,
+            'difficulty': 'medium',
           },
         ],
       },
@@ -85,14 +131,29 @@ class _ARVRLabsPageState extends State<ARVRLabsPage> {
         'sections': [
           {
             'title': 'Magnetic or Not?',
-            'image':
-                'https://th.bing.com/th/id/OIP.eBnbRvkZRwGRRLxhFKd33gHaGK?rs=1&pid=ImgDetMain',
             'facts': [
-              'Magnets stick to some metals',
-              'Magnets have a north and south pole',
-              'Opposite poles attract each other',
+              'Magnets attract objects made of iron, nickel, or cobalt',
+              'Magnets can work through some materials like paper and plastic',
+              'Every magnet has a north pole and a south pole',
+              'The Earth is like a giant magnet with north and south poles',
             ],
-            'activity': 'Test which items are magnetic!',
+            'activity':
+                'Magnet Detective: Use a virtual magnet to hunt for hidden metal objects in your AR environment. Score points by correctly predicting which items will be attracted to your magnet before testing them.',
+            'interactive': true,
+            'difficulty': 'easy',
+          },
+          {
+            'title': 'Magnetic Fields',
+            'facts': [
+              'Magnets create an invisible force field around them',
+              'Magnetic fields can push or pull other magnets',
+              'Similar poles (N-N or S-S) push each other away',
+              'Different poles (N-S) pull toward each other',
+            ],
+            'activity':
+                'Magnet Maze: Use VR controls to guide a magnetic ball through a maze. You\'ll need to use other magnets to push and pull your ball around obstacles. Watch out for tricky turns!',
+            'interactive': true,
+            'difficulty': 'hard',
           },
         ],
       },
@@ -108,14 +169,25 @@ class _ARVRLabsPageState extends State<ARVRLabsPage> {
         'sections': [
           {
             'title': 'Light and Dark',
-            'image':
-                'https://th.bing.com/th/id/OIP.XNFWs1LsYEpCG0XGQD-L9AHaF0?w=205&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7',
             'facts': [
-              'Light can\'t go through solid objects',
-              'Bigger lights make softer shadows',
-              'The sun makes our shadow outside',
+              'Shadows form when an object blocks light',
+              'Moving closer to a light source makes shadows bigger',
+              'Moving away from a light source makes shadows smaller',
+              'Transparent objects let most light pass through',
             ],
-            'activity': 'Make different shadow shapes!',
+            'activity':
+                'Create shadow puppets with your hands in front of a virtual light! Try making different animal shapes.',
+          },
+          {
+            'title': 'Sun Shadows',
+            'facts': [
+              'The sun makes shadows that change during the day',
+              'Shadows are shortest at noon when the sun is highest',
+              'Shadows are longest in the morning and evening',
+              'We can tell time using shadows (sundials)',
+            ],
+            'activity':
+                'Watch a virtual day pass and see how shadows change length and direction with the sun\'s movement.',
           },
         ],
       },
@@ -131,14 +203,25 @@ class _ARVRLabsPageState extends State<ARVRLabsPage> {
         'sections': [
           {
             'title': 'Water Fun',
-            'image':
-                'https://th.bing.com/th/id/OIP.XNFWs1LsYEpCG0XGQD-L9AHaF0?w=205&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7',
             'facts': [
-              'Heavy things often sink',
-              'Air helps things float',
-              'Boats float even though they\'re big',
+              'Objects float when they weigh less than the water they push aside',
+              'This pushing-aside force is called buoyancy',
+              'Objects with air inside often float better',
+              'The shape of an object can help it float or sink',
             ],
-            'activity': 'Predict which items will float!',
+            'activity':
+                'Drop different objects into a virtual tank of water and predict if they\'ll sink or float. Then test your predictions!',
+          },
+          {
+            'title': 'Boat Building',
+            'facts': [
+              'Boats float even when made of heavy materials like steel',
+              'The shape of a boat helps it float by pushing aside water',
+              'Adding too much weight can make a boat sink',
+              'Different boat shapes work better in different water conditions',
+            ],
+            'activity':
+                'Design and build your own boat using different materials. Test how much weight it can carry before sinking!',
           },
         ],
       },
@@ -154,14 +237,36 @@ class _ARVRLabsPageState extends State<ARVRLabsPage> {
         'sections': [
           {
             'title': 'Helpers Around Us',
-            'image':
-                'https://th.bing.com/th/id/OIP.XNFWs1LsYEpCG0XGQD-L9AHaF0?w=205&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7',
             'facts': [
-              'Firefighters keep us safe from fires',
-              'Doctors help when we\'re sick',
-              'Teachers help us learn new things',
+              'Firefighters wear special gear to protect them from heat and smoke',
+              'Police officers help keep our communities safe',
+              'Paramedics provide emergency medical care',
+              'Mail carriers deliver letters and packages to homes and businesses',
             ],
-            'activity': 'Match helpers to their tools!',
+            'activity':
+                'Visit different places in town and meet the helpers! Tap on each person to learn about their job.',
+          },
+          {
+            'title': 'Emergency Helpers',
+            'facts': [
+              'Dial 911 in an emergency to get help quickly',
+              'Firefighters use special trucks with ladders and hoses',
+              'Ambulances have medical equipment to help sick or injured people',
+              'Lifeguards watch swimmers to keep them safe in the water',
+            ],
+            'activity':
+                'Help solve different emergency scenarios! Match the right helper to each situation and learn what to do.',
+          },
+          {
+            'title': 'School Helpers',
+            'facts': [
+              'Teachers help us learn new things every day',
+              'Principals lead the school and make important decisions',
+              'School nurses help when students don\'t feel well',
+              'Custodians keep the school clean and in good repair',
+            ],
+            'activity':
+                'Explore a virtual school and find all the helpers! Learn what each person does to make school a great place.',
           },
         ],
       },
@@ -328,7 +433,11 @@ class _ARVRLabsPageState extends State<ARVRLabsPage> {
             if (_completedLabs.isNotEmpty) ...[
               const Text(
                 'Completed Labs',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
               const SizedBox(height: 16),
 
@@ -347,17 +456,6 @@ class _ARVRLabsPageState extends State<ARVRLabsPage> {
             ],
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AssignmentsPage()),
-          );
-        },
-        backgroundColor: primaryColor,
-        child: const Icon(Icons.assignment),
-        tooltip: 'View Assignments',
       ),
     );
   }
@@ -773,7 +871,7 @@ class _ARVRLabsPageState extends State<ARVRLabsPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFF4A26DB),
               ),
-              child: Text('Start Now'),
+              child: Text('Start Now', style: TextStyle(color: Colors.white)),
             ),
           ],
           shape: RoundedRectangleBorder(
@@ -873,21 +971,6 @@ class _ARVRLabsPageState extends State<ARVRLabsPage> {
                           ),
                         ),
                         SizedBox(height: 16),
-                        Container(
-                          height: 200,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.grey[200],
-                          ),
-                          child: Center(
-                            child: Icon(
-                              Icons.image,
-                              size: 50,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 16),
                         Text(
                           'Fun Facts:',
                           style: TextStyle(
@@ -981,8 +1064,8 @@ class _ARVRLabsPageState extends State<ARVRLabsPage> {
             children: [
               Text('You completed the $title lab!'),
               SizedBox(height: 20),
-              Image.asset(
-                'assets/celebration.png',
+              Image.network(
+                'https://th.bing.com/th/id/R.52313b752393e3416488437a79cd9589?rik=YzjnkuVQ%2bK%2bb1A&riu=http%3a%2f%2fclipart-library.com%2fimages_k%2fconfetti-clipart-transparent%2fconfetti-clipart-transparent-17.png&ehk=AbjkM7hY8P%2fvHjqKm65Z0kXhJMNyunaSemYgTqvGhOI%3d&risl=&pid=ImgRaw&r=0',
                 width: 200,
                 height: 100,
                 fit: BoxFit.contain,
@@ -1007,7 +1090,10 @@ class _ARVRLabsPageState extends State<ARVRLabsPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFF4A26DB),
               ),
-              child: Text('Yes, Start Now'),
+              child: Text(
+                'Yes, Start Now',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
           shape: RoundedRectangleBorder(
