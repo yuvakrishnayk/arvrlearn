@@ -82,11 +82,21 @@ class _ChatbotPageState extends State<ChatbotPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AI Learning Assistant'),
+        title: const Text(
+          "AI Learning Assistant",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true,
         automaticallyImplyLeading: false,
-        actions: [
-          IconButton(icon: const Icon(Icons.info_outline), onPressed: () {}),
-        ],
+        backgroundColor: Colors.deepPurple,
+        elevation: 0,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+        ),
       ),
       body: Column(
         children: [
