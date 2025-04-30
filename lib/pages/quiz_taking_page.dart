@@ -34,7 +34,7 @@ class _QuizTakingPageState extends State<QuizTakingPage> {
 
   // Sample analysis data for different subjects
   final Map<String, Map<String, dynamic>> _sampleAnalysisData = {
-    "Mathematics": {
+    "Maths": {
       "analysis":
           "Based on your performance in the Mathematics quiz, you've shown good understanding of basic concepts but need more practice with advanced problems.",
       "improvementPoints": [
@@ -47,7 +47,7 @@ class _QuizTakingPageState extends State<QuizTakingPage> {
       "encouragement":
           "Math is all about practice! Keep working on problems daily and you'll see improvement.",
     },
-    "Science": {
+    "Chemistry": {
       "analysis":
           "Your Science quiz results show you have a solid foundation but need to work on applying concepts to real-world scenarios.",
       "improvementPoints": [
@@ -59,45 +59,6 @@ class _QuizTakingPageState extends State<QuizTakingPage> {
       ],
       "encouragement":
           "Science is everywhere! Try relating what you learn to everyday life for better understanding.",
-    },
-    "History": {
-      "analysis":
-          "Your History quiz performance indicates you remember key events but need to work on dates and historical connections.",
-      "improvementPoints": [
-        "Create timelines for better visualization",
-        "Focus on cause-effect relationships",
-        "Memorize important dates",
-        "Understand historical contexts",
-        "Connect events across regions",
-      ],
-      "encouragement":
-          "History tells our story! The more you learn about the past, the better you'll understand the present.",
-    },
-    "English": {
-      "analysis":
-          "Your English quiz results show strong vocabulary but need improvement in grammar rules and literary analysis.",
-      "improvementPoints": [
-        "Practice verb tenses",
-        "Work on sentence structure",
-        "Read more diverse literature",
-        "Learn literary devices",
-        "Improve proofreading skills",
-      ],
-      "encouragement":
-          "Language is power! Keep reading and writing to become an even better communicator.",
-    },
-    "General Knowledge": {
-      "analysis":
-          "Your General Knowledge quiz shows you're well-rounded but could benefit from focusing on current affairs and specialized topics.",
-      "improvementPoints": [
-        "Follow daily news",
-        "Learn about different cultures",
-        "Study basic economics",
-        "Explore scientific discoveries",
-        "Read about world geography",
-      ],
-      "encouragement":
-          "Knowledge is endless! Stay curious and keep learning new things every day.",
     },
   };
 
