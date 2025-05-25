@@ -106,7 +106,7 @@ class ProfilePage extends StatelessWidget {
                   children: [
                     const SizedBox(height: 16),
                     const Text(
-                      'Alex Johnson',
+                      'Emily Johnson',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,

@@ -1,5 +1,6 @@
 import 'package:arvrlearn/pages/arvr_labs_page.dart';
 import 'package:arvrlearn/pages/assignments_page.dart';
+import 'package:arvrlearn/pages/badges_page.dart';
 import 'package:arvrlearn/pages/quiz.dart';
 import 'package:arvrlearn/pages/study_groups_page.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildStreakContainer(primaryColor, accentColor),
+            _buildStreakContainer(context, primaryColor, accentColor),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -107,60 +108,73 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildStreakContainer(Color primaryColor, Color accentColor) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [primaryColor, primaryColor.withOpacity(0.85)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+  Widget _buildStreakContainer(
+    BuildContext context,
+    Color primaryColor,
+    Color accentColor,
+  ) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(0),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const BadgesPage()),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [primaryColor, primaryColor.withOpacity(0.85)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
         ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withAlpha(51),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: SizedBox(
-                  width: 70,
-                  height: 60,
-                  child: Lottie.asset(
-                    'assets/fire.json',
-                    fit: BoxFit.contain,
-                    repeat: true,
-                    animate: true,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withAlpha(51),
+                    borderRadius: BorderRadius.circular(16),
                   ),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    '21 Day Streak!',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                  child: SizedBox(
+                    width: 70,
+                    height: 60,
+                    child: Lottie.asset(
+                      'assets/fire.json',
+                      fit: BoxFit.contain,
+                      repeat: true,
+                      animate: true,
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    'You\'re on fire! Keep learning!',
-                    style: TextStyle(color: Colors.white70),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
+                ),
+                const SizedBox(width: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      '21 Day Streak!',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      'You\'re on fire! Keep learning!',
+                      style: TextStyle(color: Colors.white70),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

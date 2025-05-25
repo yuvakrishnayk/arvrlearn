@@ -470,7 +470,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
               ),
               SizedBox(height: 8),
               Text(description, style: TextStyle(fontSize: 16)),
-              SizedBox(height: 20),
+              SizedBox(height: 10),
               Text(
                 'Instructions',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

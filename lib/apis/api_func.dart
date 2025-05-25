@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 class ApiFunc {
   // Using localhost for local testing, change to your actual server IP when deploying
   final String _baseUrl =
-      'http://10.0.2.2:5000/generate'; // 10.0.2.2 points to host machine's localhost when running in Android emulator
+      'https://learnedge-chatbot.onrender.com/generate'; // 10.0.2.2 points to host machine's localhost when running in Android emulator
 
   Future<String> generateResponse(String prompt) async {
     try {

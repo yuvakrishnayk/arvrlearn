@@ -12,39 +12,36 @@ class MathsPage extends StatefulWidget {
 class _MathsPageState extends State<MathsPage> {
   final List<Course> courses = [
     Course(
-      topic: 'Matter & Materials',
+      topic: 'Counting',
       subtopics: [
-        'Solids & Liquids',
-        'Gases',
-        'Properties of Matter',
-        'Changes in Matter',
+        'Learning Abacus',
+        'Recognizing Numbers',
+        'Counting Objects',
+        'One-to-One Correspondence',
       ],
     ),
     Course(
-      topic: 'Basic Elements',
+      topic: 'Addition',
       subtopics: [
-        'What are Elements?',
-        'Common Elements',
-        'Element Groups',
-        'Elements Around Us',
+        'Basic Addition',
+        'Addition with Visual Aids',
+        'Word Problems',
       ],
     ),
     Course(
-      topic: 'Simple Mixtures',
+      topic: 'Subtraction',
       subtopics: [
-        'Mixing Things',
-        'Separating Mixtures',
-        'Solutions',
-        'Water as a Solvent',
+        'Basic Subtraction',
+        'Subtraction with Visual Aids',
+        'Word Problems',
       ],
     ),
     Course(
-      topic: 'Introduction to Reactions',
+      topic: 'Shapes',
       subtopics: [
-        'Chemical Changes',
-        'Physical Changes',
-        'Color Changes',
-        'Heat & Reactions',
+        'Identifying Shapes',
+        'Properties of Shapes',
+        'Sorting Shapes',
       ],
     ),
   ];
